@@ -4,7 +4,7 @@
 
 **A modern, all-in-one workspace hub for productivity services**
 
-[![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
+[![License](https://img.shields.io/badge/license-SUSHI--WARE-orange.svg)](LICENSE)
 [![Version](https://img.shields.io/badge/version-0.1.0-green.svg)](package.json)
 [![Tauri](https://img.shields.io/badge/Tauri-2.0-blue.svg)](https://tauri.app/)
 
@@ -126,10 +126,9 @@ OmniDesk/
 1. Open the Settings panel
 2. Navigate to the "Theme" section
 3. Select from available themes:
-   - Cherry Blossom Pink (default)
-   - Neon Blue
-   - Forest Green
-   - Sunset Orange
+   - Sakura Pink (default)
+   - Clean Light
+   - Cyber Dark
 
 ## 🔐 Security
 
@@ -169,7 +168,7 @@ Contributions are welcome! Please feel free to submit a Pull Request. For major 
 
 ## 📄 License
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+This project is licensed under the SUSHI-WARE License - see the [LICENSE](LICENSE) file for details.
 
 ## 🙏 Acknowledgments
 

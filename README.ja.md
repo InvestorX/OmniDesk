@@ -4,7 +4,7 @@
 
 **生産性向上サービスのための、モダンなオールインワン・ワークスペースハブ**
 
-[![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
+[![License](https://img.shields.io/badge/license-SUSHI--WARE-orange.svg)](LICENSE)
 [![Version](https://img.shields.io/badge/version-0.1.0-green.svg)](package.json)
 [![Tauri](https://img.shields.io/badge/Tauri-2.0-blue.svg)](https://tauri.app/)
 
@@ -126,10 +126,9 @@ OmniDesk/
 1. 設定パネルを開く
 2. 「テーマ」セクションに移動
 3. 利用可能なテーマから選択:
-   - チェリーブロッサムピンク（デフォルト）
-   - ネオンブルー
-   - フォレストグリーン
-   - サンセットオレンジ
+   - Sakura Pink（デフォルト）
+   - Clean Light
+   - Cyber Dark
 
 ## 🔐 セキュリティ
 
@@ -169,7 +168,7 @@ OmniDesk はセキュリティを念頭に構築されています:
 
 ## 📄 ライセンス
 
-このプロジェクトは MIT ライセンスの下でライセンスされています - 詳細は [LICENSE](LICENSE) ファイルを参照してください。
+このプロジェクトは SUSHI-WARE ライセンスの下でライセンスされています - 詳細は [LICENSE](LICENSE) ファイルを参照してください。
 
 ## 🙏 謝辞
 
