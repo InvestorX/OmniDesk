@@ -118,7 +118,7 @@ OmniDesk/
 1. Open the Settings panel (gear icon in the sidebar)
 2. Navigate to the "Custom Endpoints" section
 3. Click "Add"
-4. Enter a label and endpoint URL for your service
+4. Enter a label and URL for your service
 5. The new service will appear in the Custom group in the sidebar
 
 ### Changing Themes
