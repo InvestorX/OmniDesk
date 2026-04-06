@@ -21,7 +21,7 @@ OmniDesk is a desktop application that brings all your essential productivity se
 ### Key Features
 
 - 🎯 **Unified Workspace**: Access multiple services (Gmail, Google Chat, Calendar, Drive, Gemini AI, etc.) from a single application
-- 🎨 **Beautiful Themes**: Multiple pre-built themes including Cherry Blossom Pink, Neon Blue, Forest Green, and Sunset Orange
+- 🎨 **Beautiful Themes**: Multiple pre-built themes including Sakura Pink, Clean Light, and Cyber Dark
 - 🔔 **Smart Notifications**: Real-time notification badges for services like Gmail, Calendar, and Chat
 - 🌐 **Custom URLs**: Add your own custom services and web apps to the sidebar
 - ⚡ **Native Performance**: Built on Tauri for a lightweight, fast, and secure desktop experience
