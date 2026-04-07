@@ -26,4 +26,6 @@ tauri-plugin-shell = "2.3.5"
 regex = "1.12.3"
 once_cell = "1"
 tokio = { version = "1.50.0", features = ["rt-multi-thread"] }
+tauri-plugin-dialog = "2.7.0"
+tauri-plugin-fs = "2.5.0"
 

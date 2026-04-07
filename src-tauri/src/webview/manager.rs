@@ -83,12 +83,78 @@ impl WebviewManager {
         
         let builder = WebviewBuilder::new(&label, WebviewUrl::External(url.parse().map_err(|e| format!("{}", e))?))
             .focused(false) // 生成時にフォーカスを奪わない
+            .initialization_script(r#"
+                // target="_blank" と download 属性を併せ持つリンクでダウンロードがブロックされる問題への対処
+                document.addEventListener('click', function(e) {
+                    let a = e.target.closest('a');
+                    if (a && a.hasAttribute('download')) {
+                        console.log('[OmniDesk] Intercepted download link:', a.href, 'download:', a.getAttribute('download'));
+                        if (a.getAttribute('target') === '_blank') {
+                            a.removeAttribute('target');
+                            console.log('[OmniDesk] Removed target=_blank from download link');
+                        }
+                    }
+                }, true);
+            "#)
             .on_document_title_changed(move |_webview, title| {
                 let count = NotificationWatcher::extract_count(&title);
                 let _ = app_handle.emit("notification-update", NotificationPayload {
                     service_id: service_id_clone.clone(),
                     count,
                 });
+            })
+            .on_download(|app_handle, event| {
+                use tauri_plugin_dialog::DialogExt;
+                match event {
+                    tauri::webview::DownloadEvent::Requested { url, destination, .. } => {
+                        println!("[DEBUG] Download requested for URL: {}", url);
+                        println!("[DEBUG] Original destination: {:?}", destination);
+                        
+                        // Default filename from destination path, or fallback to URL
+                        let default_filename = destination
+                            .file_name()
+                            .and_then(|s| s.to_str())
+                            .unwrap_or_else(|| {
+                                url.path_segments()
+                                    .and_then(|s| s.last())
+                                    .filter(|s| !s.is_empty())
+                                    .unwrap_or("download")
+                            });
+                        
+                        let safe_filename = std::path::Path::new(default_filename)
+                            .file_name()
+                            .and_then(|s| s.to_str())
+                            .unwrap_or("download");
+                        
+                        println!("[DEBUG] Safe filename: {}", safe_filename);
+                        
+                        let file_path = app_handle.dialog().file().set_file_name(safe_filename).blocking_save_file();
+                        
+                        if let Some(path) = file_path {
+                            if let Some(p) = path.into_path().ok() {
+                                println!("[DEBUG] User selected path: {:?}", p);
+                                *destination = p;
+                                return true;
+                            }
+                        }
+                        
+                        println!("[DEBUG] Download cancelled by user or no path selected.");
+                        false // ユーザキャンセル時はダウンロード中止
+                    }
+                    tauri::webview::DownloadEvent::Finished { url, path, success } => {
+                        println!("[DEBUG] Download finished for URL: {}, path: {:?}, success: {}", url, path, success);
+                        true
+                    }
+                    _ => true
+                }
+            })
+            .on_navigation(|url| {
+                println!("[DEBUG] Navigation requested for URL: {}", url);
+                true // allow all navigations
+            })
+            .on_new_window(|window_url, features| {
+                println!("[DEBUG] New window requested for URL: {}", window_url);
+                tauri::webview::NewWindowResponse::Allow
             });
 
         let tauri_window = &main_window;
@@ -232,7 +298,38 @@ impl WebviewManager {
             app,
             &label,
             WebviewUrl::External(url.parse().map_err(|e| format!("{}", e))?)
-        );
+        )
+        .on_download(|app_handle, event| {
+            use tauri_plugin_dialog::DialogExt;
+            match event {
+                tauri::webview::DownloadEvent::Requested { url, destination, .. } => {
+                    let default_filename = destination
+                        .file_name()
+                        .and_then(|s| s.to_str())
+                        .unwrap_or_else(|| {
+                            url.path_segments()
+                                .and_then(|s| s.last())
+                                .filter(|s| !s.is_empty())
+                                .unwrap_or("download")
+                        });
+                    
+                    let safe_filename = std::path::Path::new(default_filename)
+                        .file_name()
+                        .and_then(|s| s.to_str())
+                        .unwrap_or("download");
+                    
+                    let file_path = app_handle.dialog().file().set_file_name(safe_filename).blocking_save_file();
+                    if let Some(path) = file_path {
+                        if let Some(p) = path.into_path().ok() {
+                            *destination = p;
+                            return true;
+                        }
+                    }
+                    false // ユーザキャンセル時はダウンロード中止
+                }
+                _ => true
+            }
+        });
         builder = builder.title(format!("OmniDesk - {}", service_id));
 
         match builder.build() {
